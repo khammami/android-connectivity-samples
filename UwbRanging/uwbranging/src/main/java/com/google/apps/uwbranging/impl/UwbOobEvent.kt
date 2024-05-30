@@ -35,7 +35,9 @@ internal abstract class UwbOobEvent private constructor() {
       val endpointAddress: UwbAddress,
       val complexChannel: UwbComplexChannel,
       val sessionId: Int,
+      val subSessionId: Int,
       val sessionKeyInfo: ByteArray,
+      val subSessionKeyInfo: ByteArray,
       val sessionScope: UwbClientSessionScope,
   ) : UwbOobEvent()
 

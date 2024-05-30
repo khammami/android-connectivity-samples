@@ -66,7 +66,9 @@ internal class NearbyControllerConnector(
     addEndpoint(endpointId, endpoint)
     val sessionScope = sessionScopeCreator()
     val sessionId = Random.nextInt()
+    val subSessionId = Random.nextInt()
     val sessionKeyInfo = Random.nextBytes(8)
+    val subSessionKeyInfo = Random.nextBytes(8)
     val endpointAddress = UwbAddress(Shorts.toByteArray(sessionInfo.localAddress.toShort()))
     val localAddress = sessionScope.localAddress
     val complexChannel = sessionScope.uwbComplexChannel
@@ -77,7 +79,9 @@ internal class NearbyControllerConnector(
             endpointAddress,
             complexChannel,
             sessionId,
+            subSessionId,
             sessionKeyInfo,
+            subSessionKeyInfo,
             sessionScope
         )
 

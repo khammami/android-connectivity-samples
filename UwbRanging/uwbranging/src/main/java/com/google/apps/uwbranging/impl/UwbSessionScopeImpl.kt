@@ -81,7 +81,9 @@ internal class UwbSessionScopeImpl(
       RangingParameters(
         event.configId,
         event.sessionId,
+        event.subSessionId,
         event.sessionKeyInfo,
+        event.subSessionKeyInfo,
         event.complexChannel,
         listOf(UwbDevice(event.endpointAddress)),
         RangingParameters.RANGING_UPDATE_RATE_FREQUENT

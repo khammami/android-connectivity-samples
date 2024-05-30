@@ -20,8 +20,16 @@ package com.google.apps.uwbranging.impl
 
 import androidx.core.uwb.RangingCapabilities
 import androidx.core.uwb.RangingParameters
+
 import androidx.core.uwb.UwbAddress
 import androidx.core.uwb.UwbControleeSessionScope
+import com.google.android.gms.nearby.uwb.RangingCapabilities.DEFAULT_SUPPORTED_RANGING_UPDATE_RATES
+import com.google.android.gms.nearby.uwb.RangingCapabilities.DEFAULT_SUPPORTED_SLOT_DURATIONS
+import com.google.android.gms.nearby.uwb.RangingCapabilities.FIRA_DEFAULT_RANGING_INTERVAL_MS
+import com.google.android.gms.nearby.uwb.RangingCapabilities.FIRA_DEFAULT_SUPPORTED_CHANNEL
+import com.google.android.gms.nearby.uwb.RangingCapabilities.FIRA_DEFAULT_SUPPORTED_CONFIG_IDS
+import com.google.android.gms.nearby.uwb.RangingCapabilities.RANGE_DATA_NTF_ENABLE
+
 import com.google.common.primitives.Shorts
 import com.google.common.truth.Truth.assertThat
 import com.google.apps.uwbranging.UwbEndpoint
@@ -72,7 +80,7 @@ class NearbyControleeConnectorTest {
         UwbConnectionInfo.newBuilder()
           .setConfiguration(
             UwbConfiguration.newBuilder()
-              .setConfigId(RangingParameters.UWB_CONFIG_ID_1)
+              .setConfigId(RangingParameters.CONFIG_UNICAST_DS_TWR)
               .setChannel(9)
               .setPreambleIndex(11)
               .setSessionId(0x12345678)
@@ -92,7 +100,7 @@ class NearbyControleeConnectorTest {
         UwbConnectionInfo.newBuilder()
           .setCapabilities(
             UwbCapabilities.newBuilder()
-              .addAllSupportedConfigIds(listOf(RangingParameters.UWB_CONFIG_ID_1))
+              .addAllSupportedConfigIds(listOf(RangingParameters.CONFIG_UNICAST_DS_TWR))
               .setSupportsAzimuth(true)
               .setSupportsElevation(true)
               .build()
@@ -111,7 +119,15 @@ class NearbyControleeConnectorTest {
         RangingCapabilities(
           isDistanceSupported = true,
           isAzimuthalAngleSupported = true,
-          isElevationAngleSupported = true
+          isElevationAngleSupported = true,
+          isRangingIntervalReconfigureSupported = true,
+          isBackgroundRangingSupported = true,
+          minRangingInterval = FIRA_DEFAULT_RANGING_INTERVAL_MS,
+          supportedChannels = setOf(FIRA_DEFAULT_SUPPORTED_CHANNEL),
+          supportedNtfConfigs = setOf(RANGE_DATA_NTF_ENABLE),
+          supportedConfigIds = setOf(RangingParameters.CONFIG_UNICAST_DS_TWR),
+          supportedSlotDurations = DEFAULT_SUPPORTED_SLOT_DURATIONS.toSet(),
+          supportedRangingUpdateRates = DEFAULT_SUPPORTED_RANGING_UPDATE_RATES.toSet()
         )
       )
     controleeConnector =
@@ -153,7 +169,7 @@ class NearbyControleeConnectorTest {
     assertThat(event.sessionScope).isSameInstanceAs(controleeSessionScope)
     assertThat(event.complexChannel.channel).isEqualTo(9)
     assertThat(event.complexChannel.preambleIndex).isEqualTo(11)
-    assertThat(event.configId).isEqualTo(RangingParameters.UWB_CONFIG_ID_1)
+    assertThat(event.configId).isEqualTo(RangingParameters.CONFIG_UNICAST_DS_TWR)
     assertThat(event.endpointAddress).isEqualTo(UwbAddress(byteArrayOf(3, 4)))
     assertThat(event.endpoint.id).isEqualTo("UWB2")
     assertThat(event.endpoint.metadata).isEqualTo(byteArrayOf(3, 4, 5))

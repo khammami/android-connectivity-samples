@@ -77,7 +77,9 @@ internal class NearbyControleeConnector(
         UwbAddress(Shorts.toByteArray(sessionInfo.localAddress.toShort())),
         UwbComplexChannel(configuration.channel, configuration.preambleIndex),
         configuration.sessionId,
+        configuration.subSessionId,
         configuration.securityInfo.toByteArray(),
+        configuration.subSecurityInfo.toByteArray(),
         sessionScope
     )
   }

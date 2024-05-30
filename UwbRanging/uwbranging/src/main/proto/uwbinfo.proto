@@ -35,7 +35,9 @@ message UwbConfiguration {
   int32 channel = 2;
   int32 preamble_index = 3;
   int32 session_id = 4;
-  bytes security_info = 5;
+  int32 sub_session_id = 5;
+  bytes security_info = 6;
+  bytes sub_security_info = 7;
 }
 
 // Connection info can be capabilities or configuration.
