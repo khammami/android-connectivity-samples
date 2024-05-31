@@ -18,6 +18,7 @@
 
 package com.google.apps.uwbranging.impl
 
+import android.util.Log
 import androidx.core.uwb.RangingCapabilities
 import androidx.core.uwb.RangingParameters
 
@@ -100,9 +101,9 @@ class NearbyControleeConnectorTest {
         UwbConnectionInfo.newBuilder()
           .setCapabilities(
             UwbCapabilities.newBuilder()
-              .addAllSupportedConfigIds(listOf(RangingParameters.CONFIG_UNICAST_DS_TWR))
-              .setSupportsAzimuth(true)
-              .setSupportsElevation(true)
+              .addAllSupportedConfigIds(listOf(RangingParameters.CONFIG_UNICAST_DS_TWR,2))
+              .setAzimuthalAngleSupported(true)
+              .setElevationAngleSupported(true)
               .build()
           )
           .build()
@@ -125,7 +126,7 @@ class NearbyControleeConnectorTest {
           minRangingInterval = FIRA_DEFAULT_RANGING_INTERVAL_MS,
           supportedChannels = setOf(FIRA_DEFAULT_SUPPORTED_CHANNEL),
           supportedNtfConfigs = setOf(RANGE_DATA_NTF_ENABLE),
-          supportedConfigIds = setOf(RangingParameters.CONFIG_UNICAST_DS_TWR),
+          supportedConfigIds = listOf(RangingParameters.CONFIG_UNICAST_DS_TWR).toSet(),
           supportedSlotDurations = DEFAULT_SUPPORTED_SLOT_DURATIONS.toSet(),
           supportedRangingUpdateRates = DEFAULT_SUPPORTED_RANGING_UPDATE_RATES.toSet()
         )
@@ -154,6 +155,7 @@ class NearbyControleeConnectorTest {
     val bytesCaptor = argumentCaptor<ByteArray>()
     verify(connections).sendPayload(eq("EP1"), bytesCaptor.capture())
     val sentSessionInfo = Oob.parseFrom(bytesCaptor.lastValue).control
+    Log.d("sentSessionInfo", sentSessionInfo.toString());
     assertThat(sentSessionInfo).isEqualTo(controleeSessionInfo)
 
     eventPipe(

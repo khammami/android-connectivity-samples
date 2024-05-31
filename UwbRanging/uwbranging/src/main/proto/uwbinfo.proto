@@ -24,9 +24,17 @@ option java_package = "com.google.apps.uwbranging.impl.proto";
 
 // Represents a Controlee's capability parameters.
 message UwbCapabilities {
-  repeated int32 supported_config_ids = 1;
-  bool supports_azimuth = 2;
-  bool supports_elevation = 3;
+  bool is_distance_supported = 1;
+  bool azimuthal_angle_supported = 2;
+  bool elevation_angle_supported = 3;
+  int32 min_ranging_interval = 4;
+  repeated int32 supported_channels = 5;
+  repeated int32 supported_ntf_configs = 6;
+  repeated int32 supported_config_ids = 7;
+  repeated int32 supported_slot_durations = 8;
+  repeated int32 supported_ranging_update_rates = 9;
+  bool ranging_interval_reconfigure_supported = 10;
+  bool background_ranging_supported = 11;
 }
 
 // Represents the UWB configuration created by the controller.

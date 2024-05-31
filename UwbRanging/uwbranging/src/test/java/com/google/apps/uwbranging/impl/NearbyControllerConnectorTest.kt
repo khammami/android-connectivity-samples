@@ -72,8 +72,8 @@ class NearbyControllerConnectorTest {
           .setCapabilities(
             UwbCapabilities.newBuilder()
               .addAllSupportedConfigIds(listOf(RangingParameters.CONFIG_UNICAST_DS_TWR))
-              .setSupportsAzimuth(true)
-              .setSupportsElevation(true)
+              .setAzimuthalAngleSupported(true)
+              .setElevationAngleSupported(true)
               .build()
           )
           .build()
